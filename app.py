@@ -39,8 +39,16 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     if "text" in messaging_event["message"].keys():
                         message_text = messaging_event["message"]["text"]  # the message's text
+                        send_message(sender_id, "I'm sorry, I don't understand [" + message_text + "]")
+                    elif "attachments" in messaging_event["message"].keys():
+                        if "title" in messaging_event["message"]["attachments"]:
+                            if "Location" in messaging_event["message"]["attachments"]["title"]:
+                                send_message(sender_id, "I have processed your attendance!")
+                            else:
+                                send_message(sender_id, "Please send your current location.")
 
-                    log(messaging_event["message"].keys())
+
+
                     send_message(sender_id, "I'm broken right now! Try again later :)")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
