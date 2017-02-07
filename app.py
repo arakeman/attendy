@@ -41,7 +41,7 @@ def webhook():
                         message_text = messaging_event["message"]["text"]  # the message's text
                         send_message(sender_id, "I'm sorry, I don't understand [" + message_text + "]")
                     elif "attachments" in messaging_event["message"].keys():
-                        if "title" in messaging_event["message"]["attachments"].keys():
+                        if "title" in messaging_event["message"]["attachments"][0].keys():
                             if "Location" in messaging_event["message"]["attachments"]["title"]:
                                 send_message(sender_id, "I have processed your attendance!")
                             else:
