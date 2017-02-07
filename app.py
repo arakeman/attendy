@@ -47,10 +47,6 @@ def webhook():
                             else:
                                 send_message(sender_id, "Please send your current location.")
 
-
-
-                    send_message(sender_id, "I'm broken right now! Try again later :)")
-
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
 
