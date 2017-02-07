@@ -40,6 +40,7 @@ def webhook():
                     if "text" in messaging_event["message"].keys():
                         message_text = messaging_event["message"]["text"]  # the message's text
 
+                    log(messaging_event["message"].keys())
                     send_message(sender_id, "I'm broken right now! Try again later :)")
 
                 if messaging_event.get("delivery"):  # delivery confirmation
