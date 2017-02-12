@@ -2,11 +2,6 @@ import os
 import sys
 import json
 
-from apiclient import discovery
-from oauth2client import client
-from oauth2client import tools
-from oauth2client.file import Storage
-
 import requests
 from flask import Flask, request
 
@@ -47,7 +42,7 @@ def webhook():
                         send_message(sender_id, "I'm sorry, I don't understand [" + message_text + "]")
                     elif "attachments" in messaging_event["message"].keys():
                         if "title" in messaging_event["message"]["attachments"][0].keys():
-                            if "Location" in messaging_event["message"]["attachments"][0]["title"]:
+                            if "Location" in messaging_event["message"]["attachments"][0]["title"] and "Pinned" not in messaging_event["message"]["attachments"][0]["title"]:
                                 send_message(sender_id, "I have processed your attendance!")
                             else:
                                 send_message(sender_id, "Please send your current location.")
