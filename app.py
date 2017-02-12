@@ -61,6 +61,8 @@ def webhook():
                                 lat = coordinates["lat"]
                                 lon = coordinates["long"]
                                 worksheet.append_row([title, lat, lon])
+                                r = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?fields=first_name,last_name&access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
+                                log(r)
                                 send_message(sender_id, "I have processed your attendance!")
                             else:
                                 send_message(sender_id, "Please send your current location.")
