@@ -50,9 +50,12 @@ def webhook():
 
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
+                    r = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?fields=first_name,last_name&access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
+                    first_name = r.text["first_name"]
+                    last_name = r.text["last_name"]
                     if "text" in messaging_event["message"].keys():
                         message_text = messaging_event["message"]["text"]  # the message's text
-                        send_message(sender_id, "I'm sorry, I don't understand [" + message_text + "]")
+                        send_message(sender_id, ("Sorry + " first_name + ", I don't understand \'" + message_text + "\'"))
                     elif "attachments" in messaging_event["message"].keys():
                         if "title" in messaging_event["message"]["attachments"][0].keys():
                             title = messaging_event["message"]["attachments"][0]["title"]
@@ -60,12 +63,10 @@ def webhook():
                                 coordinates =  messaging_event["message"]["attachments"][0]["payload"]["coordinates"]
                                 lat = coordinates["lat"]
                                 lon = coordinates["long"]
-                                worksheet.append_row([title, lat, lon])
-                                r = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?fields=first_name,last_name&access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
-                                log(r.text)
-                                send_message(sender_id, "I have processed your attendance!")
+                                worksheet.append_row([last_name, first_name, title, lat, lon])
+                                send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
                             else:
-                                send_message(sender_id, "Please send your current location.")
+                                send_message(sender_id, (first_name + ", please send your current location."))
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
