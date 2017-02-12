@@ -1,12 +1,25 @@
 import os
 import sys
 import json
-
+import gspread 
+from oauth2client.service_account import ServiceAccountCredentials
 import requests
 from flask import Flask, request
 
 app = Flask(__name__)
 
+scope = [
+    'https://spreadsheets.google.com/feeds',
+    'https://www.googleapis.com/auth/drive'
+]
+
+credentials = ServiceAccountCredentials.from_json_keyfile_name('My Project-3aa3cf8e8cee.json', scope)
+
+gc = gspread.authorize(credentials)
+
+sh = gc.open_by_url('https://docs.google.com/spreadsheets/d/1ghA2W0tGvK0HSb55eER7UVBHwdjW5WUgcAaNYHmpy1E/')
+
+worksheet = sh.get_worksheet(0)
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -43,6 +56,7 @@ def webhook():
                     elif "attachments" in messaging_event["message"].keys():
                         if "title" in messaging_event["message"]["attachments"][0].keys():
                             if "Location" in messaging_event["message"]["attachments"][0]["title"] and "Pinned" not in messaging_event["message"]["attachments"][0]["title"]:
+                                worksheet.append_row(messaging_event["message"]["attachments"][0]["title"])
                                 send_message(sender_id, "I have processed your attendance!")
                             else:
                                 send_message(sender_id, "Please send your current location.")
