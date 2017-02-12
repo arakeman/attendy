@@ -56,7 +56,7 @@ def webhook():
                     elif "attachments" in messaging_event["message"].keys():
                         if "title" in messaging_event["message"]["attachments"][0].keys():
                             title = messaging_event["message"]["attachments"][0]["title"]
-                            coordinates =  messaging_event["message"]["attachments"][0]["coordinates"]
+                            coordinates =  messaging_event["message"]["attachments"][0]["payload"]
                             if "Location" in title and "Pinned" not in title:
                                 worksheet.append_row(title, coordinates)
                                 send_message(sender_id, "I have processed your attendance!")
