@@ -52,8 +52,8 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     r = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?fields=first_name,last_name&access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     log(r.text)
-                    first_name = r.text["first_name"]
-                    last_name = r.text["last_name"]
+                    first_name = "lol" #r.text["first_name"]
+                    last_name = "pls" #r.text["last_name"]
                     if "text" in messaging_event["message"].keys():
                         message_text = messaging_event["message"]["text"]  # the message's text
                         send_message(sender_id, ("Sorry " + first_name + ", I don't understand \'" + message_text + "\'"))
