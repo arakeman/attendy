@@ -56,7 +56,7 @@ def webhook():
                     elif "attachments" in messaging_event["message"].keys():
                         if "title" in messaging_event["message"]["attachments"][0].keys():
                             if "Location" in messaging_event["message"]["attachments"][0]["title"] and "Pinned" not in messaging_event["message"]["attachments"][0]["title"]:
-                                worksheet.append_row(messaging_event["message"]["attachments"][0]["title"])
+                                worksheet.append_row((messaging_event["message"]["attachments"][0]["title"]))
                                 send_message(sender_id, "I have processed your attendance!")
                             else:
                                 send_message(sender_id, "Please send your current location.")
