@@ -65,7 +65,7 @@ def webhook():
                                 lat = coordinates["lat"]
                                 lon = coordinates["long"]
                                 myTime = time.strftime("%H:%M:%S")
-                                myDate = time.strftime("%d/%m/%Y")
+                                myDate = time.strftime("%m/%d/%Y")
                                 worksheet.append_row([myDate, myTime, last_name, first_name, title, lat, lon])
                                 send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
                             else:
