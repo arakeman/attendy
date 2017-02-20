@@ -81,6 +81,7 @@ def webhook():
                                 if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
                                     correctLocation = 1
                                 myDate = pst_dt.strftime("%m/%d/%Y")
+                                print(sh.worksheets())
                                 worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                 if not myDate in worksheet.col_values(1):
                                     addDate = pst_dt.strftime("%m%d%Y") 
