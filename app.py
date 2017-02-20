@@ -81,12 +81,15 @@ def webhook():
                                 if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
                                     correctLocation = 1
                                 myDate = pst_dt.strftime("%m/%d/%Y")
-                                print(sh.worksheets())
+                                addDate = pst_dt.strftime("%m%d%Y") 
+                                titles = [w.title for w in sh.worksheets()]
                                 worksheet = sh.get_worksheet(len(sh.worksheets())-1)
-                                if not myDate in worksheet.col_values(1):
-                                    addDate = pst_dt.strftime("%m%d%Y") 
+                                if not addDate in titles:
                                     sh.add_worksheet(addDate, 13, 1)
                                     worksheet = sh.get_worksheet(len(sh.worksheets())-1)
+                                else:
+                                    index = titles.indexOf(addDate)
+                                    worksheet = sh.get_worksheet(index)
                                 decision = correctDate + correctTime + correctLocation
                                 strD = "ABSENT"
                                 if decision == 3:
