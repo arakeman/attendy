@@ -62,7 +62,7 @@ def webhook():
                     elif "attachments" in messaging_event["message"].keys():
                         if "title" in messaging_event["message"]["attachments"][0].keys():
                             title = messaging_event["message"]["attachments"][0]["title"]
-                            if "Location" in title and "Pinned" not in title:
+                            if True:
                                 coordinates =  messaging_event["message"]["attachments"][0]["payload"]["coordinates"]
                                 lat = coordinates["lat"]
                                 lon = coordinates["long"]
