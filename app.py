@@ -86,7 +86,11 @@ def webhook():
                                     addDate = pst_dt.strftime("%m%d%Y")
                                     sh.add_worksheet(addDate, 13, 1)
                                     worksheet = sh.get_worksheet(len(sh.worksheets())-1)
-                                worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctTime, correctLocation, correctDate], len(worksheet.get_all_values()) + 1)
+                                decision = correctDate + correctTime + correctLocation
+                                strD = "ABSENT"
+                                if decision == 3:
+                                    strD = "Present"
+                                worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctTime, correctLocation, correctDate, strD], len(worksheet.get_all_values()) + 1)
                                 send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
                             else:
                                 send_message(sender_id, (first_name + ", please send your current location."))
