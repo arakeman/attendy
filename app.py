@@ -20,9 +20,9 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name('My Project-3aa3c
 
 gc = gspread.authorize(credentials)
 
-sh = gc.open_by_url('https://docs.google.com/spreadsheets/d/1ghA2W0tGvK0HSb55eER7UVBHwdjW5WUgcAaNYHmpy1E/')
+sh = gc.open_by_url('https://docs.google.com/spreadsheets/d/13s-lbQkkcJfS-ENGFv3fVUDfsbIltJDkQ5F320fA1Wo/')
 
-worksheet = sh.get_worksheet(0)
+worksheet = sh.get_worksheet(len(sh.worksheets)-1)
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -83,8 +83,10 @@ def webhook():
                                 if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
                                     correctLocation = 1
                                 myDate = pst_dt.strftime("%m/%d/%Y")
-                                worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctTime, correctLocation, correctDate], len(worksheet.col_values(1)) + 1)
-                                print(worksheet.col_values(1))
+                                if not myDate in worksheet.col_values(col):
+                                    sh.add_worksheet(myDate, 10, 1)
+                                    worksheet = sh.get_worksheet(len(sh.worksheets)-1)
+                                worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctTime, correctLocation, correctDate], len(worksheet.get_all_values()) + 1)
                                 send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
                             else:
                                 send_message(sender_id, (first_name + ", please send your current location."))
