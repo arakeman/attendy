@@ -67,6 +67,7 @@ def webhook():
                                 lat = coordinates["lat"]
                                 lon = coordinates["long"]
                                 pst_tz = timezone('US/Pacific')
+                                utc_dt = pytz.utc.localize(datetime.utcnow())
                                 pst_dt = pst_tz.normalize(utc_dt.astimezone(pst_tz))
                                 myTime = pst_dt.strftime("%H:%M:%S")
                                 myDate = pst_dt.strftime("%m/%d/%Y")
