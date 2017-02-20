@@ -62,7 +62,7 @@ def webhook():
                     elif "attachments" in messaging_event["message"].keys():
                         if "title" in messaging_event["message"]["attachments"][0].keys():
                             title = messaging_event["message"]["attachments"][0]["title"]
-                            if True:
+                            if "Location" in title and "Pinned" not in title:
                                 coordinates =  messaging_event["message"]["attachments"][0]["payload"]["coordinates"]
                                 lat = coordinates["lat"]
                                 lon = coordinates["long"]
@@ -73,7 +73,7 @@ def webhook():
                                 strTime = str(myTime).split(":")
                                 correctTime = 0
                                 correctLocation = 0
-                                if int(strTime[0]) >= 16 and int(strTime[0]) < 19:
+                                if int(strTime[0]) >= 16 and int(strTime[0]) < 22:
                                     correctTime = 1
                                 if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
                                     correctLocation = 1
