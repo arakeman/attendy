@@ -1,8 +1,9 @@
 import os
 import sys
-import time
 import json
 import gspread 
+from datetime import datetime
+import pytz
 from oauth2client.service_account import ServiceAccountCredentials
 import requests
 from flask import Flask, request
@@ -64,8 +65,9 @@ def webhook():
                                 coordinates =  messaging_event["message"]["attachments"][0]["payload"]["coordinates"]
                                 lat = coordinates["lat"]
                                 lon = coordinates["long"]
-                                myTime = time.strftime("%H:%M:%S")
-                                myDate = time.strftime("%m/%d/%Y")
+                                pst_dt = pst_tz.normalize(utc_dt.astimezone(pst_tz))
+                                myTime = pst_dt.strftime("%H:%M:%S")
+                                myDate = pst_dt.strftime("%m/%d/%Y")
                                 worksheet.insert_row([myDate, myTime, last_name, first_name, title, lat, lon], len(worksheet.get_all_values()) + 1)
                                 send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
                             else:
