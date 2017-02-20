@@ -83,7 +83,7 @@ def webhook():
                                 myDate = pst_dt.strftime("%m/%d/%Y")
                                 worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                 if not myDate in worksheet.col_values(1):
-                                    addDate = pst_dt.strftime("%m%d%Y")
+                                    addDate = pst_dt.strftime("%m%d%Y") 
                                     sh.add_worksheet(addDate, 13, 1)
                                     worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                 decision = correctDate + correctTime + correctLocation
