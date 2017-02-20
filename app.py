@@ -84,7 +84,7 @@ def webhook():
                                     correctLocation = 1
                                 myDate = pst_dt.strftime("%m/%d/%Y")
                                 worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctTime, correctLocation, correctDate], len(worksheet.col_values("A")) + 1)
-                                print(worksheet.col_values(0))
+                                print(worksheet.col_values("A"))
                                 send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
                             else:
                                 send_message(sender_id, (first_name + ", please send your current location."))
