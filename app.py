@@ -72,11 +72,11 @@ def webhook():
                                 correctTime = 0
                                 correctLocation = 0
                                 correctDate = pst_dt.weekday()
-                                if correctDate == 0:
+                                if correctDate == 6: #changed
                                     correctDate = 1
                                 else:
                                     correctDate = 0
-                                if int(strTime[0]) >= 16 and int(strTime[0]) < 19:
+                                if int(strTime[0]) >= 16 and int(strTime[0]) < 23: #CHANGED
                                     correctTime = 1
                                 if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
                                     correctLocation = 1
