@@ -22,7 +22,7 @@ gc = gspread.authorize(credentials)
 
 sh = gc.open_by_url('https://docs.google.com/spreadsheets/d/13s-lbQkkcJfS-ENGFv3fVUDfsbIltJDkQ5F320fA1Wo/')
 
-worksheet = sh.get_worksheet(len(sh.worksheets)-1)
+worksheet = sh.get_worksheet(len(sh.worksheets())-1)
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -85,7 +85,7 @@ def webhook():
                                 myDate = pst_dt.strftime("%m/%d/%Y")
                                 if not myDate in worksheet.col_values(col):
                                     sh.add_worksheet(myDate, 10, 1)
-                                    worksheet = sh.get_worksheet(len(sh.worksheets)-1)
+                                    worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                 worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctTime, correctLocation, correctDate], len(worksheet.get_all_values()) + 1)
                                 send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
                             else:
