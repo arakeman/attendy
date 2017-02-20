@@ -82,7 +82,7 @@ def webhook():
                                     correctLocation = 1
                                 myDate = pst_dt.strftime("%m/%d/%Y")
                                 worksheet = sh.get_worksheet(len(sh.worksheets())-1)
-                                if not myDate in worksheet.col_values(col):
+                                if not myDate in worksheet.col_values(1):
                                     sh.add_worksheet(myDate, 10, 1)
                                     worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                 worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctTime, correctLocation, correctDate], len(worksheet.get_all_values()) + 1)
