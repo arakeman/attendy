@@ -83,7 +83,7 @@ def webhook():
                                 myDate = pst_dt.strftime("%m/%d/%Y")
                                 worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                 if not myDate in worksheet.col_values(1):
-                                    sh.add_worksheet(myDate, 10, 1)
+                                    sh.add_worksheet(myDate, 13, 1)
                                     worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                 worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctTime, correctLocation, correctDate], len(worksheet.get_all_values()) + 1)
                                 send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
