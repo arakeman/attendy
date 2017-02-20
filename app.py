@@ -72,11 +72,11 @@ def webhook():
                                 correctTime = 0
                                 correctLocation = 0
                                 correctDate = pst_dt.weekday()
-                                if correctDate == 6: #changed
+                                if correctDate == 0: 
                                     correctDate = 1
                                 else:
                                     correctDate = 0
-                                if int(strTime[0]) >= 16 and int(strTime[0]) < 23: #CHANGED
+                                if int(strTime[0]) >= 16 and int(strTime[0]) < 19: 
                                     correctTime = 1
                                 if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
                                     correctLocation = 1
@@ -93,7 +93,7 @@ def webhook():
                                 decision = correctDate + correctTime + correctLocation
                                 strD = "ABSENT"
                                 if decision == 3:
-                                    strD = "Present"
+                                    strD = "PRESENT"
                                 worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctTime, correctLocation, correctDate, strD], len(worksheet.get_all_values()) + 1)
                                 send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
                             else:
