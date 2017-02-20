@@ -83,13 +83,12 @@ def webhook():
                                 myDate = pst_dt.strftime("%m/%d/%Y")
                                 addDate = pst_dt.strftime("%m%d%Y") 
                                 titles = [w.title for w in sh.worksheets()]
-                                print(titles)
                                 worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                 if not addDate in titles:
                                     sh.add_worksheet(addDate, 13, 1)
                                     worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                 else:
-                                    index = titles.indexOf(addDate)
+                                    index = titles.index(addDate)
                                     worksheet = sh.get_worksheet(index)
                                 decision = correctDate + correctTime + correctLocation
                                 strD = "ABSENT"
