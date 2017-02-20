@@ -22,8 +22,6 @@ gc = gspread.authorize(credentials)
 
 sh = gc.open_by_url('https://docs.google.com/spreadsheets/d/13s-lbQkkcJfS-ENGFv3fVUDfsbIltJDkQ5F320fA1Wo/')
 
-worksheet = sh.get_worksheet(len(sh.worksheets())-1)
-
 @app.route('/', methods=['GET'])
 def verify():
     # when the endpoint is registered as a webhook, it must echo back
@@ -83,6 +81,7 @@ def webhook():
                                 if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
                                     correctLocation = 1
                                 myDate = pst_dt.strftime("%m/%d/%Y")
+                                worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                 if not myDate in worksheet.col_values(col):
                                     sh.add_worksheet(myDate, 10, 1)
                                     worksheet = sh.get_worksheet(len(sh.worksheets())-1)
