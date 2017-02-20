@@ -70,8 +70,15 @@ def webhook():
                                 utc_dt = pytz.utc.localize(datetime.utcnow())
                                 pst_dt = pst_tz.normalize(utc_dt.astimezone(pst_tz))
                                 myTime = pst_dt.strftime("%H:%M:%S")
+                                strTime = str(myTime).split(":")
+                                correctTime = 0
+                                correctLocation = 0
+                                if int(strTime[0]) >= 16 and int(strTime[0]) < 19:
+                                    correctTime = 1
+                                if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
+                                    correctLocation = 1
                                 myDate = pst_dt.strftime("%m/%d/%Y")
-                                worksheet.insert_row([myDate, myTime, last_name, first_name, title, lat, lon], len(worksheet.get_all_values()) + 1)
+                                worksheet.insert_row([myDate, myTime, last_name, first_name, title, lat, lon, correctTime, correctLocation], len(worksheet.get_all_values()) + 1)
                                 send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
                             else:
                                 send_message(sender_id, (first_name + ", please send your current location."))
