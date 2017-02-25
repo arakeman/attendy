@@ -55,10 +55,17 @@ def webhook():
                     r = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?fields=first_name,last_name&access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     first_name = r.json()["first_name"]
                     last_name = r.json()["last_name"]
+
                     if "text" in messaging_event["message"].keys():
                         message_text = messaging_event["message"]["text"]  # the message's text
-                        message_text = re.sub('\W+','', message_text)
-                        send_message(sender_id, ("Sorry, I don't understand \'" + message_text + "\'"))
+                        if first_name == "Alexander" && last_name == "Rakeman":
+                            if message_text == "Start" or "start":
+                                print("BEGIN")
+                            else:
+                                send_message(sender_id, ("Hi " + first_name + ", please send \'Start\' to me to begin taking attendance."))
+                        else:
+                            message_text = re.sub('\W+','', message_text)
+                            send_message(sender_id, ("Sorry, I don't understand \'" + message_text + "\'"))
                     elif "attachments" in messaging_event["message"].keys():
                         if "title" in messaging_event["message"]["attachments"][0].keys():
                             title = messaging_event["message"]["attachments"][0]["title"]
