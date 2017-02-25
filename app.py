@@ -70,6 +70,7 @@ def webhook():
                                 # open time sheet
                                 fifteen = pst_dt + timedelta(minutes = 15)
                                 timesheet = timesh.get_worksheet(0)
+                                timesheet.delete_row(1)
                                 timesheet.insert_row([fifteen.strftime("%H:%M:%S")], 1)
                                 send_message(sender_id, ("Hi " + first_name + ", I have started taking attendance. This session will expire at " + fifteen.strftime("%I:%M:%S") + "."))
                             else:
