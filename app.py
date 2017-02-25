@@ -58,7 +58,7 @@ def webhook():
 
                     if "text" in messaging_event["message"].keys():
                         message_text = messaging_event["message"]["text"]  # the message's text
-                        if first_name == "Alexander" && last_name == "Rakeman":
+                        if first_name == "Alexander" and last_name == "Rakeman":
                             if message_text == "Start" or "start":
                                 print("BEGIN")
                             else:
