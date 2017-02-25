@@ -59,7 +59,7 @@ def webhook():
                     if "text" in messaging_event["message"].keys():
                         message_text = messaging_event["message"]["text"]  # the message's text
                         if first_name == "Alexander" and last_name == "Rakeman":
-                            if message_text == "Start" or "start":
+                            if message_text == "Start" or message_text == "start":
                                 print("BEGIN")
                             else:
                                 send_message(sender_id, ("Hi " + first_name + ", please send \'Start\' to me to begin taking attendance."))
