@@ -2,7 +2,7 @@ import os
 import sys
 import json
 import gspread 
-from datetime import datetime
+import datetime
 from pytz import timezone
 import pytz
 from oauth2client.service_account import ServiceAccountCredentials
