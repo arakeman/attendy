@@ -23,6 +23,9 @@ gc = gspread.authorize(credentials)
 
 sh = gc.open_by_url('https://docs.google.com/spreadsheets/d/13s-lbQkkcJfS-ENGFv3fVUDfsbIltJDkQ5F320fA1Wo/')
 
+timesh = gc.open_by_url('https://docs.google.com/spreadsheets/d/1hAhmiyyryzhi139LAbusNCGusMd5k0E13OjPyVHTaeE/')
+
+
 @app.route('/', methods=['GET'])
 def verify():
     # when the endpoint is registered as a webhook, it must echo back
@@ -55,12 +58,20 @@ def webhook():
                     r = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?fields=first_name,last_name&access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
                     first_name = r.json()["first_name"]
                     last_name = r.json()["last_name"]
-
+                    pst_tz = timezone('US/Pacific')
+                    utc_dt = pytz.utc.localize(datetime.utcnow())
+                    pst_dt = pst_tz.normalize(utc_dt.astimezone(pst_tz))
+                    myTime = pst_dt.strftime("%H:%M:%S")
+                    strTime = str(myTime).split(":")
                     if "text" in messaging_event["message"].keys():
                         message_text = messaging_event["message"]["text"]  # the message's text
                         if first_name == "Alexander" and last_name == "Rakeman":
                             if message_text == "Start" or message_text == "start":
                                 print("BEGIN")
+                                # open time sheet
+                                fifteen = st_dt + datetime.timedelta(minutes = 15)
+                                print(fifteen.strftime("%H:%M:%S"))
+                                
                             else:
                                 send_message(sender_id, ("Hi " + first_name + ", please send \'Start\' to me to begin taking attendance."))
                         else:
@@ -73,11 +84,6 @@ def webhook():
                                 coordinates =  messaging_event["message"]["attachments"][0]["payload"]["coordinates"]
                                 lat = coordinates["lat"]
                                 lon = coordinates["long"]
-                                pst_tz = timezone('US/Pacific')
-                                utc_dt = pytz.utc.localize(datetime.utcnow())
-                                pst_dt = pst_tz.normalize(utc_dt.astimezone(pst_tz))
-                                myTime = pst_dt.strftime("%H:%M:%S")
-                                strTime = str(myTime).split(":")
                                 correctTime = 0
                                 correctLocation = 0
                                 correctDate = pst_dt.weekday()
