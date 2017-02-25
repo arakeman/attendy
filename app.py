@@ -69,7 +69,7 @@ def webhook():
                             if message_text == "Start" or message_text == "start":
                                 print("BEGIN")
                                 # open time sheet
-                                fifteen = pst_dt + datetime.timedelta(minutes = 15)
+                                fifteen = pst_dt + timedelta(minutes = 15)
                                 print(fifteen.strftime("%H:%M:%S"))
 
                             else:
