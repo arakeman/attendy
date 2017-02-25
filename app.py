@@ -67,11 +67,11 @@ def webhook():
                         message_text = messaging_event["message"]["text"]  # the message's text
                         if first_name == "Alexander" and last_name == "Rakeman":
                             if message_text == "Start" or message_text == "start":
-                                print("BEGIN")
                                 # open time sheet
                                 fifteen = pst_dt + timedelta(minutes = 15)
-                                print(fifteen.strftime("%H:%M:%S"))
 
+                                print(fifteen.strftime("%H:%M:%S"))
+                                send_message(sender_id, ("Hi " + first_name + ", I have started taking attendance. This session will expire at " + fifteen.strftime("%I:%M:%S") + "."))
                             else:
                                 send_message(sender_id, ("Hi " + first_name + ", please send \'Start\' to me to begin taking attendance."))
                         else:
