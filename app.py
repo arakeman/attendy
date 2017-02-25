@@ -69,9 +69,9 @@ def webhook():
                             if message_text == "Start" or message_text == "start":
                                 print("BEGIN")
                                 # open time sheet
-                                fifteen = st_dt + datetime.timedelta(minutes = 15)
+                                fifteen = pst_dt + datetime.timedelta(minutes = 15)
                                 print(fifteen.strftime("%H:%M:%S"))
-                                
+
                             else:
                                 send_message(sender_id, ("Hi " + first_name + ", please send \'Start\' to me to begin taking attendance."))
                         else:
