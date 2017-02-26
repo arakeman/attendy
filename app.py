@@ -131,8 +131,8 @@ def webhook():
                                     strD = "INCORRECT"
                                     if decision == 3:
                                         strD = "PRESENT"
-                                    worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name + "" + row[1], title, lat, lon, correctStartTime, correctLocation, strD], len(worksheet.get_all_values()) + 1)
-                                    send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number + " + row[1] + "!"))
+                                    worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD], len(worksheet.get_all_values()) + 1)
+                                    send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
                                 else:
                                     send_message(sender_id, (first_name + ", attendance has not been taken yet."))
                             else:
