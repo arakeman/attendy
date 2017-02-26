@@ -73,7 +73,6 @@ def webhook():
                         approved = ["Alexander Rakeman", "Jennifer Dai", "Sunny Zhang", "Riley Mangubat", "Iris Sun"]
                         if (first_name + " " + last_name) in approved:
                             if message_text == "Start" or message_text == "start":
-                                # open time sheet
                                 fifteen = pst_dt + timedelta(minutes = 15)
                                 timesheet = timesh.get_worksheet(0)
                                 row = timesheet.row_values(1)
