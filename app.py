@@ -106,8 +106,8 @@ def webhook():
                                 correctStartTime = 0
                                 timesheet = timesh.get_worksheet(0)
                                 startTime = datetime.strptime(timesheet.row_values(1)[0], "%m%d%Y %H:%M:%S")
-                                utc = pytz.UTC
-                                if utc.localize(pst_dt) < utc.localize(startTime):
+                                if pst_dt < pst_tz.localize(startTime):
+                                    print(pst_dt + " " + pst_tz.localize(startTime))
                                     correctStartTime = 1
 
                                 myDate = pst_dt.strftime("%m/%d/%Y")
