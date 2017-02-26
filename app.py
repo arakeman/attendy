@@ -77,7 +77,7 @@ def webhook():
                                 timesheet = timesh.get_worksheet(0)
                                 row = timesheet.row_values(1)
                                 startTime = datetime.strptime(row[0], "%m%d%Y %H:%M:%S")
-                                counter = row[1]
+                                counter = int(row[1])
                                 if startTime.day == fifteen.day:
                                     counter = counter + 1
                                 else:
