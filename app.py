@@ -70,7 +70,7 @@ def webhook():
 
                     if "text" in messaging_event["message"].keys():
                         message_text = messaging_event["message"]["text"]  # the message's text
-                        approved = ["Alexander Rakeman", "Jennifer Dai", "Sunny Zhang", "Riley Mangubat", "Iris Sun"]
+                        approved = ["Alexander Rakeman", "Sunny Zhang", "Surina Gulati", "Janet Dong", "Stephen Torres"]
                         if (first_name + " " + last_name) in approved:
                             if message_text == "Start" or message_text == "start":
                                 fifteen = pst_dt + timedelta(minutes = 15)
