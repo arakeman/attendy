@@ -81,10 +81,10 @@ def webhook():
                                 if startTime.day == fifteen.day:
                                     counter = counter + 1
                                 else:
-                                    counter = 0
+                                    counter = 1
                                 timesheet.delete_row(1)
                                 timesheet.insert_row([fifteen.strftime("%m%d%Y %H:%M:%S"), counter], 1)
-                                send_message(sender_id, ("Hi " + first_name + ", I have started taking attendance. This session will expire at " + fifteen.strftime("%I:%M:%S") + "."))
+                                send_message(sender_id, ("Hi " + first_name + ", I have started taking attendance number " + counter + ". This session will expire at " + fifteen.strftime("%I:%M:%S") + "."))
                             else:
                                 send_message(sender_id, ("Hi " + first_name + ", please send \'Start\' to begin an attendance session."))
                         else:
@@ -110,7 +110,8 @@ def webhook():
 
                                 correctStartTime = 0
                                 timesheet = timesh.get_worksheet(0)
-                                startTime = datetime.strptime(timesheet.row_values(1)[0], "%m%d%Y %H:%M:%S")
+                                row = timesheet.row_values(1)
+                                startTime = datetime.strptime(row[0], "%m%d%Y %H:%M:%S")
                                 print(pst_dt)
                                 print(pst_tz.localize(startTime))
 
@@ -130,8 +131,8 @@ def webhook():
                                     strD = "INCORRECT"
                                     if decision == 3:
                                         strD = "PRESENT"
-                                    worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctStartTime, correctLocation, strD], len(worksheet.get_all_values()) + 1)
-                                    send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
+                                    worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name + "" + row[1], title, lat, lon, correctStartTime, correctLocation, strD], len(worksheet.get_all_values()) + 1)
+                                    send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number + " + row[1] + "!"))
                                 else:
                                     send_message(sender_id, (first_name + ", attendance has not been taken yet."))
                             else:
