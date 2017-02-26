@@ -104,7 +104,7 @@ def webhook():
                                 lon = coordinates["long"]
                                 correctLocation = 0
                                 correctDate = pst_dt.weekday()
-                                if correctDate == 6: 
+                                if correctDate == 5: 
                                     correctDate = 1
                                 else:
                                     correctDate = 0
