@@ -76,7 +76,7 @@ def webhook():
                                 fifteen = pst_dt + timedelta(minutes = 15)
                                 timesheet = timesh.get_worksheet(0)
                                 timesheet.delete_row(1)
-                                timesheet.insert_row([fifteen.strftime("%m-%d-%Y %H:%M:%S")], 1)
+                                timesheet.insert_row([fifteen.strftime("%m%d%Y %H:%M:%S")], 1)
                                 send_message(sender_id, ("Hi " + first_name + ", I have started taking attendance. This session will expire at " + fifteen.strftime("%I:%M:%S") + "."))
                             else:
                                 send_message(sender_id, ("Hi " + first_name + ", please send \'Start\' to begin an attendance session."))
@@ -105,7 +105,7 @@ def webhook():
 
                                 correctStartTime = 0
                                 timesheet = timesh.get_worksheet(0)
-                                startTime = datetime.strptime(timesheet.row_values(1)[0], "%m-%d-%Y %H:%M:%S")
+                                startTime = datetime.strptime(timesheet.row_values(1)[0], "%m%d%Y %H:%M:%S")
                                 if pst_dt < startTime:
                                     correctStartTime = 1
 
