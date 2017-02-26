@@ -80,9 +80,8 @@ def webhook():
                                 counter = int(row[1])
 
                                 if pst_dt < pst_tz.localize(startTime):
-                                    send_message(sender_id, ("Hi " + first_name + ", attendance session " + counter + " is already active."))
+                                    send_message(sender_id, ("Hi " + first_name + ", attendance session " + str(counter) + " is already active."))
                                 else:
-                                    counter = int(row[1])
                                     if startTime.day == fifteen.day:
                                         counter = counter + 1
                                     else:
