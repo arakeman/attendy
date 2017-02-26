@@ -106,6 +106,7 @@ def webhook():
                                 correctStartTime = 0
                                 timesheet = timesh.get_worksheet(0)
                                 startTime = datetime.strptime(timesheet.row_values(1)[0], "%m%d%Y %H:%M:%S")
+                                startTime = pst_tz.normalize(startTime.astimezone(pst_tz))
                                 if pst_dt < startTime:
                                     correctStartTime = 1
 
