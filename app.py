@@ -77,8 +77,10 @@ def webhook():
                                 timesheet = timesh.get_worksheet(0)
                                 row = timesheet.row_values(1)
                                 startTime = datetime.strptime(row[0], "%m%d%Y %H:%M:%S")
+                                counter = int(row[1])
+
                                 if pst_dt < pst_tz.localize(startTime):
-                                    send_message(sender_id, ("Hi " + first_name + ", an attendance session is already active."))
+                                    send_message(sender_id, ("Hi " + first_name + ", attendance session " + counter + " is already active."))
                                 else:
                                     counter = int(row[1])
                                     if startTime.day == fifteen.day:
