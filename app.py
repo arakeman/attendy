@@ -76,8 +76,15 @@ def webhook():
                                 # open time sheet
                                 fifteen = pst_dt + timedelta(minutes = 15)
                                 timesheet = timesh.get_worksheet(0)
+                                row = timesheet.row_values(1)
+                                startTime = datetime.strptime(row[0], "%m%d%Y %H:%M:%S")
+                                counter = row[1]
+                                if startTime.day == fifteen.day:
+                                    counter = counter + 1
+                                else:
+                                    counter = 0
                                 timesheet.delete_row(1)
-                                timesheet.insert_row([fifteen.strftime("%m%d%Y %H:%M:%S")], 1)
+                                timesheet.insert_row([fifteen.strftime("%m%d%Y %H:%M:%S"), counter], 1)
                                 send_message(sender_id, ("Hi " + first_name + ", I have started taking attendance. This session will expire at " + fifteen.strftime("%I:%M:%S") + "."))
                             else:
                                 send_message(sender_id, ("Hi " + first_name + ", please send \'Start\' to begin an attendance session."))
@@ -92,15 +99,13 @@ def webhook():
                                 coordinates =  messaging_event["message"]["attachments"][0]["payload"]["coordinates"]
                                 lat = coordinates["lat"]
                                 lon = coordinates["long"]
-                                correctTime = 0
                                 correctLocation = 0
                                 correctDate = pst_dt.weekday()
                                 if correctDate == 0: 
                                     correctDate = 1
                                 else:
                                     correctDate = 0
-                                if int(strTime[0]) >= 16 and int(strTime[0]) < 19: 
-                                    correctTime = 1
+                                
                                 if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
                                     correctLocation = 1
 
@@ -112,23 +117,24 @@ def webhook():
 
                                 if pst_dt < pst_tz.localize(startTime):
                                     correctStartTime = 1
-
-                                myDate = pst_dt.strftime("%m/%d/%Y")
-                                addDate = pst_dt.strftime("%m%d%Y") 
-                                titles = [w.title for w in sh.worksheets()]
-                                worksheet = sh.get_worksheet(len(sh.worksheets())-1)
-                                if not addDate in titles:
-                                    sh.add_worksheet(addDate, 14, 1)
+                                    myDate = pst_dt.strftime("%m/%d/%Y")
+                                    addDate = pst_dt.strftime("%m%d%Y") 
+                                    titles = [w.title for w in sh.worksheets()]
                                     worksheet = sh.get_worksheet(len(sh.worksheets())-1)
+                                    if not addDate in titles:
+                                        sh.add_worksheet(addDate, 14, 1)
+                                        worksheet = sh.get_worksheet(len(sh.worksheets())-1)
+                                    else:
+                                        index = titles.index(addDate)
+                                        worksheet = sh.get_worksheet(index)
+                                    decision = correctDate + correctStartTime + correctLocation
+                                    strD = "INCORRECT"
+                                    if decision == 3:
+                                        strD = "PRESENT"
+                                    worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctStartTime, correctLocation, (correctStartTime + correctLocation), strD], len(worksheet.get_all_values()) + 1)
+                                    send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
                                 else:
-                                    index = titles.index(addDate)
-                                    worksheet = sh.get_worksheet(index)
-                                decision = correctDate + correctTime + correctLocation
-                                strD = "INCORRECT"
-                                if decision == 3:
-                                    strD = "PRESENT"
-                                worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctStartTime, correctLocation, (correctStartTime + correctLocation), strD], len(worksheet.get_all_values()) + 1)
-                                send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
+                                    send_message(sender_id, (first_name + ", attendance has not been taken yet."))
                             else:
                                 send_message(sender_id, (first_name + ", please send your current location."))
 
