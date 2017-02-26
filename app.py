@@ -53,16 +53,21 @@ def webhook():
 
                 if messaging_event.get("message"):  # someone sent us a message
 
+                    #get metadata
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     r = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?fields=first_name,last_name&access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
+                    
+                    #add validation
                     first_name = r.json()["first_name"]
                     last_name = r.json()["last_name"]
+                    
                     pst_tz = timezone('US/Pacific')
                     utc_dt = pytz.utc.localize(datetime.utcnow())
                     pst_dt = pst_tz.normalize(utc_dt.astimezone(pst_tz))
                     myTime = pst_dt.strftime("%H:%M:%S")
                     strTime = str(myTime).split(":")
+
                     if "text" in messaging_event["message"].keys():
                         message_text = messaging_event["message"]["text"]  # the message's text
                         if first_name == "Alexander" and last_name == "Rakeman":
@@ -78,7 +83,8 @@ def webhook():
                         else:
                             message_text = re.sub('\W+','', message_text)
                             send_message(sender_id, ("Sorry, I don't understand \'" + message_text + "\'"))
-                    elif "attachments" in messaging_event["message"].keys():
+
+                    elif "attachments" in messaging_event["message"].keys(): #sending location
                         if "title" in messaging_event["message"]["attachments"][0].keys():
                             title = messaging_event["message"]["attachments"][0]["title"]
                             if "Location" in title and "Pinned" not in title:
@@ -96,9 +102,13 @@ def webhook():
                                     correctTime = 1
                                 if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
                                     correctLocation = 1
-                                startTime = 0
+
+                                correctStartTime = 0
                                 timesheet = timesh.get_worksheet(0)
-                                print(timesheet.row_values(1)[0])
+                                startTime = datetime.strptime(timesheet.row_values(1)[0], "%m-%d-%Y %H:%M:%S")
+                                if pst_dt < startTime:
+                                    correctStartTime = 1
+
                                 myDate = pst_dt.strftime("%m/%d/%Y")
                                 addDate = pst_dt.strftime("%m%d%Y") 
                                 titles = [w.title for w in sh.worksheets()]
@@ -113,7 +123,7 @@ def webhook():
                                 strD = "INCORRECT"
                                 if decision == 3:
                                     strD = "PRESENT"
-                                worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctTime, correctLocation, correctDate, strD], len(worksheet.get_all_values()) + 1)
+                                worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name, title, lat, lon, correctTime, correctLocation, correctDate, strD, correctStartTime], len(worksheet.get_all_values()) + 1)
                                 send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance!"))
                             else:
                                 send_message(sender_id, (first_name + ", please send your current location."))
