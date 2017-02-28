@@ -28,8 +28,6 @@ timesh = gc.open_by_url('https://docs.google.com/spreadsheets/d/1hAhmiyyryzhi139
 
 pst_tz = timezone('US/Pacific')
 
-static = True
-
 @app.route('/', methods=['GET'])
 def verify():
     # when the endpoint is registered as a webhook, it must echo back
@@ -75,8 +73,6 @@ def webhook():
                     if "text" in message_keys:
                         message_text = messaging_event["message"]["text"]  # the message's text
                         approved = ["Alexander Rakeman", "Sunny Zhang", "Surina Gulati", "Janet Dong", "Stephen Torres"]
-                        print(static)
-                        static = not static
                         if (first_name + " " + last_name) in approved:
                             if message_text == "Start" or message_text == "start":
                                 fifteen = pst_dt + timedelta(minutes = 15)
