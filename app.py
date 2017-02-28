@@ -26,6 +26,9 @@ sh = gc.open_by_url('https://docs.google.com/spreadsheets/d/13s-lbQkkcJfS-ENGFv3
 
 timesh = gc.open_by_url('https://docs.google.com/spreadsheets/d/1hAhmiyyryzhi139LAbusNCGusMd5k0E13OjPyVHTaeE/')
 
+pst_tz = timezone('US/Pacific')
+
+static = True
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -58,20 +61,22 @@ def webhook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     r = requests.get("https://graph.facebook.com/v2.6/" + sender_id + "?fields=first_name,last_name&access_token=" + os.environ["PAGE_ACCESS_TOKEN"])
+                    json = r.json()
+                    first_name = json["first_name"]
+                    last_name = json["last_name"]
                     
-                    #add validation
-                    first_name = r.json()["first_name"]
-                    last_name = r.json()["last_name"]
-                    
-                    pst_tz = timezone('US/Pacific')
                     utc_dt = pytz.utc.localize(datetime.utcnow())
                     pst_dt = pst_tz.normalize(utc_dt.astimezone(pst_tz))
                     myTime = pst_dt.strftime("%H:%M:%S")
                     strTime = str(myTime).split(":")
 
-                    if "text" in messaging_event["message"].keys():
+                    message_keys = messaging_event["message"].keys()
+
+                    if "text" in message_keys:
                         message_text = messaging_event["message"]["text"]  # the message's text
                         approved = ["Alexander Rakeman", "Sunny Zhang", "Surina Gulati", "Janet Dong", "Stephen Torres"]
+                        print(static)
+                        static = not static
                         if (first_name + " " + last_name) in approved:
                             if message_text == "Start" or message_text == "start":
                                 fifteen = pst_dt + timedelta(minutes = 15)
@@ -96,7 +101,7 @@ def webhook():
                             message_text = re.sub('\W+','', message_text)
                             send_message(sender_id, ("Sorry, I don't understand \'" + message_text + "\'"))
 
-                    elif "attachments" in messaging_event["message"].keys(): #sending location
+                    elif "attachments" in message_keys: #sending location
                         if "title" in messaging_event["message"]["attachments"][0].keys():
                             title = messaging_event["message"]["attachments"][0]["title"]
                             if "Location" in title and "Pinned" not in title:
@@ -117,14 +122,11 @@ def webhook():
                                 timesheet = timesh.get_worksheet(0)
                                 row = timesheet.row_values(1)
                                 startTime = datetime.strptime(row[0], "%m%d%Y %H:%M:%S")
-                                print(pst_dt)
-                                print(pst_tz.localize(startTime))
 
                                 if pst_dt < pst_tz.localize(startTime):
                                     correctStartTime = 1
                                     myDate = pst_dt.strftime("%m/%d/%Y")
                                     addDate = pst_dt.strftime("%m%d%Y") 
-                                    titles = [w.title for w in sh.worksheets()]
                                     worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                     if not addDate in titles:
                                         sh.add_worksheet(addDate, 14, 1)
