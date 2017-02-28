@@ -138,9 +138,7 @@ def webhook():
                                         strD = "PRESENT"
                                     worksheet.add_rows(1)
                                     worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD], len(worksheet.get_all_values()) + 1)
-                                    for i in range(20):
-                                        print(i)
-                                        time.sleep(1)
+                                    time.sleep(1)
                                     send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
                                 else:
                                     send_message(sender_id, (first_name + ", attendance has not been taken yet."))
