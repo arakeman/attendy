@@ -4,6 +4,7 @@ import json
 import gspread 
 from datetime import datetime, timedelta
 from pytz import timezone
+import time
 import pytz
 from oauth2client.service_account import ServiceAccountCredentials
 import requests
@@ -104,7 +105,7 @@ def webhook():
                                 lon = coordinates["long"]
                                 correctLocation = 0
                                 correctDate = pst_dt.weekday()
-                                if correctDate == 5: 
+                                if correctDate == 0: 
                                     correctDate = 1
                                 else:
                                     correctDate = 0
@@ -136,6 +137,9 @@ def webhook():
                                     if decision == 3:
                                         strD = "PRESENT"
                                     worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD], len(worksheet.get_all_values()) + 1)
+                                    for i in range(20):
+                                        print(i)
+                                        time.sleep(1)
                                     send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
                                 else:
                                     send_message(sender_id, (first_name + ", attendance has not been taken yet."))
