@@ -319,7 +319,10 @@ def webhook():
                                     else:
                                         print("No match found for " + keyLookup)
                                         worksheet.append_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD])
-                                    send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
+                                    if keyLookup in worksheet.col_values(4):
+                                        send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
+                                    else: 
+                                        send_message(sender_id, ("I was unable to complete your request. Please try again in a few minutes."))
                                     return "ok", 200
                                 else:
                                     send_message(sender_id, (first_name + ", attendance has not been taken yet."))
