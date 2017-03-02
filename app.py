@@ -307,20 +307,20 @@ def webhook():
                                         worksheet.add_rows(180)
 
                                     i = 0
-                                    print(worksheet.col_values(3))
+                                    print(worksheet.col_values(4))
                                     if keyLookup in students:
                                         print("Match found for " + keyLookup)
-                                        worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD], studentToRow[keyLookup])
+                                        worksheet.insert_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD], studentToRow[keyLookup])
                                         while keyLookup not in worksheet.col_values(3) and i < 5:
                                             print("Try number " + str(i))
-                                            worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD], studentToRow[keyLookup])
+                                            worksheet.insert_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD], studentToRow[keyLookup])
                                             i = i + 1
                                     else:
                                         print("No match found for " + keyLookup)
-                                        worksheet.append_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD])
+                                        worksheet.append_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD])
                                         while keyLookup not in worksheet.col_values(3) and i < 5:
                                             print("Try number " + str(i))
-                                            worksheet.append_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD])
+                                            worksheet.append_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD])
                                             i = i + 1
 
                                     if i == 5:
