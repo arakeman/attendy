@@ -259,8 +259,8 @@ def webhook():
                                         counter = counter + 1
                                     else:
                                         counter = 1
-                                    timesheet.delete_row(1)
                                     timesheet.insert_row([fifteen.strftime("%m%d%Y %H:%M:%S"), counter], 1)
+                                    timesheet.delete_row(2)
                                     send_message(sender_id, ("Hi " + first_name + ", I have started taking attendance number " + str(counter) + ". This session will expire at " + fifteen.strftime("%I:%M:%S") + "."))
                                     return "ok", 200
                             else:
