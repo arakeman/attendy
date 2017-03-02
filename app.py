@@ -278,7 +278,9 @@ def webhook():
                                 lon = coordinates["long"]
                                 correctLocation = 0
                                 
-                                if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
+                                #37.875654, -122.259302 
+                                #x: 37.874406 -> 37.876520 y: -122.260423 -> -122.258215
+                                if lat >= 37.874406 and lat <= 37.876520 and lon >= -122.260423 and lon <= -122.258215:
                                     correctLocation = 1
 
                                 correctStartTime = 0
@@ -320,7 +322,11 @@ def webhook():
                                         print("No match found for " + keyLookup)
                                         worksheet.append_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD])
                                     if keyLookup in worksheet.col_values(4):
-                                        send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
+                                        if correctLocation:
+                                            send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
+                                        else:
+                                            send_message(sender_id, (first_name + ", I have processed your attendance number " + row[1] + ", however your location was incorrect. Please connect to WiFi to try and get a more accurate location, or make sure the TA knows your location will be incorrect."))
+
                                     else: 
                                         send_message(sender_id, ("I was unable to complete your request. Please try again in a few minutes."))
                                     return "ok", 200
