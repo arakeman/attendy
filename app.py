@@ -309,10 +309,11 @@ def webhook():
                                         worksheet.add_rows(180)
 
                                     i = 0
-                                    print(worksheet.col_values(4))
                                     if keyLookup in students:
                                         print("Match found for " + keyLookup)
-                                        worksheet.insert_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD], studentToRow[keyLookup])
+                                        values = zip(range(1, 11), [myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD])
+                                        for pair in values:
+                                            worksheet.update_cell(studentToRow[keyLookup], pair[0], pair[1])
                                     else:
                                         print("No match found for " + keyLookup)
                                         worksheet.append_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD])
