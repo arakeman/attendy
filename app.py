@@ -307,6 +307,7 @@ def webhook():
                                         worksheet.add_rows(180)
 
                                     i = 0
+                                    print(worksheet.col_values(3))
                                     if keyLookup in students:
                                         print("Match found for " + keyLookup)
                                         worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD], studentToRow[keyLookup])
