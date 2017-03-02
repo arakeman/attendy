@@ -196,6 +196,8 @@ studentToRow = {
 "zhe zhang 3" : 166
 }
 
+students = studentToRow.keys()
+
 @app.route('/', methods=['GET'])
 def verify():
     # when the endpoint is registered as a webhook, it must echo back
@@ -273,11 +275,6 @@ def webhook():
                                 lat = coordinates["lat"]
                                 lon = coordinates["long"]
                                 correctLocation = 0
-                                correctDate = pst_dt.weekday()
-                                if correctDate == 0: 
-                                    correctDate = 1
-                                else:
-                                    correctDate = 0
                                 
                                 if lat >= 37.875221 and lat <= 37.876219 and lon >= -122.259733 and -122.258767:
                                     correctLocation = 1
@@ -298,14 +295,36 @@ def webhook():
                                     else:
                                         index = titles.index(addDate)
                                         worksheet = sh.get_worksheet(index)
-                                    decision = correctDate + correctStartTime + correctLocation
+                                    decision = correctStartTime + correctLocation
                                     strD = "INCORRECT"
-                                    if decision == 3:
+                                    if decision == 2:
                                         strD = "PRESENT"
-                                    worksheet.add_rows(1)
-                                    worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD], len(worksheet.get_all_values()) + 1)
-                                    time.sleep(1)
-                                    send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
+
+                                    keyLookup = first_name + " " + last_name + " " + row[1]
+
+                                    if worksheet.row_count < 180:
+                                        worksheet.add_rows(180)
+
+                                    i = 0
+                                    if keyLookup in students:
+                                        print("Match found for " + keyLookup)
+                                        worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD], studentToRow[keyLookup])
+                                        while(not keyLookup in worksheet.col_values(3) and i < 5)
+                                            print("Try number " + str(i))
+                                            worksheet.insert_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD], studentToRow[keyLookup])
+                                            i = i + 1
+                                    else:
+                                        print("No match found for " + keyLookup)
+                                        worksheet.append_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD])
+                                        while(not keyLookup in worksheet.col_values(3) and i < 5)
+                                            print("Try number " + str(i))
+                                            worksheet.append_row([myDate, myTime, sender_id, first_name + " " + last_name + " " + row[1], title, lat, lon, correctStartTime, correctLocation, strD])
+                                            i = i + 1
+
+                                    if i == 5:
+                                        send_message(sender_id, ("We had trouble processing your request. Please wait a few minutes and try again."))
+                                    else:
+                                        send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
                                 else:
                                     send_message(sender_id, (first_name + ", attendance has not been taken yet."))
                             else:
