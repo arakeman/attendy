@@ -302,7 +302,7 @@ def webhook():
                                         strD = "PRESENT"
 
                                     keyLookup = first_name + " " + last_name + " " + row[1]
-
+                                    keyLookup = keyLookup.lower()
                                     if worksheet.row_count < 180:
                                         worksheet.add_rows(180)
 
