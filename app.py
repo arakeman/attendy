@@ -334,7 +334,7 @@ def webhook():
                                     send_message(sender_id, (first_name + ", attendance has not been taken yet."))
                                     return "ok", 200
                             else:
-                                send_message(sender_id, (first_name + ", please send your current location."))
+                                send_message(sender_id, (first_name + ", please send your current location, or make sure the TA knows you are unable to send your current location."))
                                 return "ok", 200
 
                 if messaging_event.get("delivery"):  # delivery confirmation
