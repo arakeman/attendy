@@ -253,7 +253,7 @@ def webhook():
 
                                 if pst_dt < pst_tz.localize(startTime):
                                     send_message(sender_id, ("Hi " + first_name + ", attendance session " + str(counter) + " is already active."))
-                                    return 0
+                                    return
                                 else:
                                     if startTime.day == fifteen.day:
                                         counter = counter + 1
@@ -262,13 +262,13 @@ def webhook():
                                     timesheet.delete_row(1)
                                     timesheet.insert_row([fifteen.strftime("%m%d%Y %H:%M:%S"), counter], 1)
                                     send_message(sender_id, ("Hi " + first_name + ", I have started taking attendance number " + str(counter) + ". This session will expire at " + fifteen.strftime("%I:%M:%S") + "."))
-                                    return 0
+                                    return
                             else:
                                 send_message(sender_id, ("Hi " + first_name + ", please send \'Start\' to begin an attendance session."))
                         else:
                             message_text = re.sub('\W+','', message_text)
                             send_message(sender_id, ("Sorry, I don't understand \'" + message_text + "\'"))
-                            return 0
+                            return
                     elif "attachments" in message_keys: #sending location
                         if "title" in messaging_event["message"]["attachments"][0].keys():
                             title = messaging_event["message"]["attachments"][0]["title"]
@@ -317,13 +317,13 @@ def webhook():
                                         print("No match found for " + keyLookup)
                                         worksheet.append_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD])
                                     send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
-                                    return 0
+                                    return
                                 else:
                                     send_message(sender_id, (first_name + ", attendance has not been taken yet."))
-                                    return 0
+                                    return
                             else:
                                 send_message(sender_id, (first_name + ", please send your current location."))
-                                return 0
+                                return
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
