@@ -253,6 +253,7 @@ def webhook():
 
                                 if pst_dt < pst_tz.localize(startTime):
                                     send_message(sender_id, ("Hi " + first_name + ", attendance session " + str(counter) + " is already active."))
+                                    return 0
                                 else:
                                     if startTime.day == fifteen.day:
                                         counter = counter + 1
@@ -261,12 +262,13 @@ def webhook():
                                     timesheet.delete_row(1)
                                     timesheet.insert_row([fifteen.strftime("%m%d%Y %H:%M:%S"), counter], 1)
                                     send_message(sender_id, ("Hi " + first_name + ", I have started taking attendance number " + str(counter) + ". This session will expire at " + fifteen.strftime("%I:%M:%S") + "."))
+                                    return 0
                             else:
                                 send_message(sender_id, ("Hi " + first_name + ", please send \'Start\' to begin an attendance session."))
                         else:
                             message_text = re.sub('\W+','', message_text)
                             send_message(sender_id, ("Sorry, I don't understand \'" + message_text + "\'"))
-
+                            return 0
                     elif "attachments" in message_keys: #sending location
                         if "title" in messaging_event["message"]["attachments"][0].keys():
                             title = messaging_event["message"]["attachments"][0]["title"]
@@ -311,26 +313,17 @@ def webhook():
                                     if keyLookup in students:
                                         print("Match found for " + keyLookup)
                                         worksheet.insert_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD], studentToRow[keyLookup])
-                                        while keyLookup not in worksheet.col_values(3) and i < 5:
-                                            print("Try number " + str(i))
-                                            worksheet.insert_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD], studentToRow[keyLookup])
-                                            i = i + 1
                                     else:
                                         print("No match found for " + keyLookup)
                                         worksheet.append_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD])
-                                        while keyLookup not in worksheet.col_values(3) and i < 5:
-                                            print("Try number " + str(i))
-                                            worksheet.append_row([myDate, myTime, sender_id, keyLookup, title, lat, lon, correctStartTime, correctLocation, strD])
-                                            i = i + 1
-
-                                    if i == 5:
-                                        send_message(sender_id, ("We had trouble processing your request. Please wait a few minutes and try again."))
-                                    else:
-                                        send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
+                                    send_message(sender_id, ("Thanks " + first_name + ", I have processed your attendance number " + row[1] + "!"))
+                                    return 0
                                 else:
                                     send_message(sender_id, (first_name + ", attendance has not been taken yet."))
+                                    return 0
                             else:
                                 send_message(sender_id, (first_name + ", please send your current location."))
+                                return 0
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
