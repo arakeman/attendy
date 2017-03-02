@@ -260,7 +260,7 @@ def webhook():
                                         counter = 1
                                     timesheet.delete_row(1)
                                     timesheet.insert_row([fifteen.strftime("%m%d%Y %H:%M:%S"), counter], 1)
-                                    send_message(sender_id, ("Hi " + first_name + ", I have started taking attendance number " + counter + ". This session will expire at " + fifteen.strftime("%I:%M:%S") + "."))
+                                    send_message(sender_id, ("Hi " + first_name + ", I have started taking attendance number " + str(counter) + ". This session will expire at " + fifteen.strftime("%I:%M:%S") + "."))
                             else:
                                 send_message(sender_id, ("Hi " + first_name + ", please send \'Start\' to begin an attendance session."))
                         else:
@@ -288,6 +288,7 @@ def webhook():
                                     correctStartTime = 1
                                     myDate = pst_dt.strftime("%m/%d/%Y")
                                     addDate = pst_dt.strftime("%m%d%Y") 
+                                    titles = [w.title for w in sh.worksheets()]
                                     worksheet = sh.get_worksheet(len(sh.worksheets())-1)
                                     if not addDate in titles:
                                         sh.add_worksheet(addDate, 14, 1)
