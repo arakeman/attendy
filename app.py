@@ -104,9 +104,9 @@ studentToRow = {
 "daniela kim 1" : 74,
 "daniela kim 2" : 75,
 "daniela kim 3" : 76,
-"jennifer kirby 1" : 77,
-"jennifer kirby 2" : 78,
-"jennifer kirby 3" : 79,
+"jenny kirby 1" : 77,
+"jenny kirby 2" : 78,
+"jenny kirby 3" : 79,
 "ronen ke 1" : 80,
 "ronen ke 2" : 81,
 "ronen ke 3" : 82,
@@ -137,9 +137,9 @@ studentToRow = {
 "daryus medora 1" : 107,
 "daryus medora 2" : 108,
 "daryus medora 3" : 109,
-"brian mickle 1" : 110,
-"brian mickle 2" : 111,
-"brian mickle 3" : 112,
+"brian mickel 1" : 110,
+"brian mickel 2" : 111,
+"brian mickel 3" : 112,
 "brian nguyen 1" : 113,
 "brian nguyen 2" : 114,
 "brian nguyen 3" : 115,
@@ -193,7 +193,10 @@ studentToRow = {
 "sunny zhang 3" : 163,
 "zhe zhang 1" : 164,
 "zhe zhang 2" : 165,
-"zhe zhang 3" : 166
+"zhe zhang 3" : 166,
+"carol zhang 1" : 167,
+"carol zhang 2" : 168,
+"carol zhang 3" : 169
 }
 
 students = studentToRow.keys()
